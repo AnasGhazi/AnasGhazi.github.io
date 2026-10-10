@@ -56,5 +56,17 @@ Export images at about 2000px on the long edge (JPG quality 80, or WebP) so page
 
 ## Publishing
 
-It's a static folder, so any static host works. Drag the folder onto
-[Netlify Drop](https://app.netlify.com/drop), or push it to GitHub and enable GitHub Pages or Vercel.
+Live at **https://anasghazi.github.io**, served by GitHub Pages from the `main` branch of
+[AnasGhazi/AnasGhazi.github.io](https://github.com/AnasGhazi/AnasGhazi.github.io).
+
+To publish changes, commit and push; the site updates a minute or two later:
+
+```sh
+cd ~/Desktop/ghazi
+git add -A
+git commit -m "Describe the change"
+git push
+```
+
+`assets_for_portfolio/` (raw originals, résumé) is in `.gitignore` and never uploaded. Copy what the
+site needs into `media/` instead.
