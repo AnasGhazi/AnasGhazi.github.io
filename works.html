@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en" data-page="works">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>works — Ghazi.</title>
+  <meta name="description" content="Anas Ghazi — film, photography &amp; visual stories.">
+  <meta name="theme-color" content="#b2c7ab">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&amp;family=Space+Mono&amp;display=swap">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script>
+    /* Apply the saved theme and decide whether the page starts behind the curtain, before first paint. */
+    (function (d) {
+      d.classList.add("js");
+      try { var t = localStorage.getItem("theme"); if (t) d.dataset.theme = t; } catch (e) {}
+      try {
+        var s = sessionStorage, still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+        if (s.getItem("pt") || (d.dataset.page === "home" && !s.getItem("intro") && !still)) d.classList.add("covered");
+      } catch (e) {}
+    })(document.documentElement);
+  </script>
+  <script src="content.js" defer></script>
+  <script src="assets/js/main.js" defer></script>
+</head>
+<body>
+  <div class="curtain" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+  <main id="main"></main>
+  <noscript><p style="padding:2rem">This site needs JavaScript to show its work.</p></noscript>
+</body>
+</html>
