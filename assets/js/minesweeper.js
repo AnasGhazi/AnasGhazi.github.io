@@ -34,7 +34,7 @@
             .join("")}</div>
           <div class="ms__opts">
             <button type="button" class="ms__btn lbl" data-flagmode aria-pressed="false">flag mode</button>
-            <button type="button" class="ms__btn lbl" data-sound aria-pressed="false">sound off</button>
+            <button type="button" class="ms__btn lbl" data-sound aria-pressed="true">sound on</button>
           </div>
         </div>
         <div class="ms__stage">
@@ -70,7 +70,7 @@
 
     let mode = store.get("ms-mode", "easy");
     if (!MODES[mode]) mode = "easy";
-    let sound = store.get("ms-sound", false);
+    let sound = store.get("ms-sound", true);
     let flagMode = false;
     let cells, mined, opened, flags, over, started, seconds, timer, pendingTime;
 
