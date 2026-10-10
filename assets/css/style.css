@@ -290,9 +290,27 @@ ul, ol { list-style: none; }
 }
 
 /* ---------- sections ---------- */
-.sec { padding-top: 64px; }
-.sec--last { padding-bottom: 96px; }
-@media (min-width: 768px) { .sec { padding-top: 160px; } .sec--last { padding-bottom: 160px; } }
+/* Section spacing lives inside the bordered frame, so its vertical lines run unbroken from one
+   section into the next. Across that top spacing (--pt) the two lines are drawn as backgrounds
+   that grow downward as the section scrolls into view: growLines() sets --g from 0 to 1. Below
+   the spacing they're always fully drawn. The real border stays, transparent, to keep widths. */
+.sec > .g > .frame, .page-head > .g > .frame {
+  --pt: 64px;
+  --ln: linear-gradient(var(--line), var(--line));
+  --top: calc(var(--pt) * var(--g, 1));
+  padding-top: var(--pt);
+  border-color: transparent;
+  background:
+    var(--ln) left top / 1px var(--top) no-repeat border-box,
+    var(--ln) right top / 1px var(--top) no-repeat border-box,
+    var(--ln) left 0 top var(--pt) / 1px 100% no-repeat border-box,
+    var(--ln) right 0 top var(--pt) / 1px 100% no-repeat border-box;
+}
+.sec--last > .g > .frame { padding-bottom: 96px; }
+@media (min-width: 768px) {
+  .sec > .g > .frame { --pt: 160px; }
+  .sec--last > .g > .frame { padding-bottom: 160px; }
+}
 .sec-head { padding: var(--pad); border-bottom: 1px solid var(--line); }
 
 .mask { display: block; overflow: hidden; padding-bottom: 0.12em; margin-bottom: -0.12em; }
@@ -357,7 +375,7 @@ ul, ol { list-style: none; }
 @media (min-width: 768px) {
   .show-m { display: none; }
   .show { display: block; }
-  .show__pin { height: 100svh; padding-top: var(--hh); }
+  .show__pin { height: calc(100svh - var(--hh)); }
   .show__grid {
     position: relative; height: 100%;
     display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); grid-template-rows: auto minmax(0, 1fr);
@@ -540,8 +558,8 @@ a.svc__media:hover > .fill { transform: scale(1.04); }
 }
 
 /* ---------- inner pages ---------- */
-.page-head { padding-top: calc(var(--hh) + 64px); }
-@media (min-width: 768px) { .page-head { padding-top: calc(var(--hh) + 128px); } }
+.page-head > .g > .frame { --pt: calc(var(--hh) + 64px); }
+@media (min-width: 768px) { .page-head > .g > .frame { --pt: calc(var(--hh) + 128px); } }
 .page-head h1 { font-size: clamp(3.5rem, 13vw, 11rem); line-height: 0.85; font-weight: 700; letter-spacing: -0.07em; }
 .back { display: inline-block; margin-bottom: 32px; }
 

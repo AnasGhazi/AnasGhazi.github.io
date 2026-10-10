@@ -608,6 +608,28 @@
     run();
   }
 
+  // The frame lines in the space above each section draw downward as it scrolls in: none when its
+  // top is at the bottom of the screen, fully drawn by the time it reaches the middle.
+  function growLines() {
+    const frames = $$(".sec > .g > .frame, .page-head > .g > .frame");
+    if (!frames.length || reduce) return;
+    const last = new WeakMap();
+    const run = () => {
+      const vh = innerHeight;
+      frames.forEach((f) => {
+        const top = f.getBoundingClientRect().top;
+        const g = Math.min(1, Math.max(0, (vh - top) / (vh * 0.5)));
+        const v = g.toFixed(3);
+        if (last.get(f) !== v) { last.set(f, v); f.style.setProperty("--g", v); }
+      });
+    };
+    let queued = false;
+    const queue = () => { if (!queued) { queued = true; requestAnimationFrame(() => { queued = false; run(); }); } };
+    addEventListener("scroll", queue, { passive: true });
+    addEventListener("resize", queue);
+    run();
+  }
+
   function filters() {
     const buttons = $$("[data-filter]");
     buttons.forEach((b) =>
@@ -826,6 +848,7 @@
   carousel();
   showcase();
   fillWords();
+  growLines();
   filters();
   lightbox();
   forms();
