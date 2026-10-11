@@ -87,15 +87,26 @@
     `<${tag}${cls ? ` class="${cls}"` : ""}><span class="mask"><span>${esc(title)}</span></span></${tag}></div>`;
   const section = (inner, cls = "sec") => `<section class="${cls}"><div class="g"><div class="frame">${inner}</div></div></section>`;
 
+  // A project's cover: its looping video if it has one (poster = cover), else the cover image.
+  // `play` picks who starts it: "data-inview" (plays while on screen) or the showcase's own logic.
+  const coverMedia = (p, play = "data-inview") =>
+    p.coverVideo
+      ? `<video class="fill" muted loop playsinline preload="none"${p.cover ? ` poster="${esc(p.cover)}"` : ""} ${play}><source src="${esc(p.coverVideo)}" onerror="phFail(this.parentNode)"></video>`
+      : img(p.cover, { alt: p.title });
+  const liveLabel = "visit site ↗";
+
   const card = (p, i) => `
     <article class="card" data-cat="${esc(p.category)}">
-      <a class="card__media${p.coverStyle === "comic" ? " comic" : ""}" href="${linkFor(p)}" data-cursor="${p.game ? "play" : "view"}" tabindex="-1" aria-hidden="true">${img(p.cover, { alt: p.title })}${playBadge(p)}</a>
+      <a class="card__media${p.coverStyle === "comic" ? " comic" : ""}" href="${linkFor(p)}" data-cursor="${p.game ? "play" : "view"}" tabindex="-1" aria-hidden="true">${coverMedia(p)}${playBadge(p)}</a>
       <div class="card__body">
         <div class="card__row lbl"><span>${pad2(i + 1)}</span><span>${esc(p.year)}</span></div>
         <h3 class="card__title">${esc(p.title)}</h3>
         <p class="card__type">${esc(p.type)}</p>
         ${tags(p.tags)}
-        ${btn(ctaFor(p), linkFor(p), "btn--sm" + (p.game ? " btn--play" : ""))}
+        <div class="card__ctas">
+          ${btn(ctaFor(p), linkFor(p), "btn--sm" + (p.game ? " btn--play" : ""))}
+          ${p.live ? `<a class="btn btn--sm" href="${esc(p.live)}" target="_blank" rel="noopener" data-text="${liveLabel}"><span>${liveLabel}</span></a>` : ""}
+        </div>
       </div>
     </article>`;
 
@@ -125,9 +136,12 @@
               <div class="show__info">
                 <div class="show__top"><h3 class="show__title"><span>${esc(p.title)}</span></h3><span class="lbl show__type">${esc(p.type)}</span></div>
                 ${tags(p.tags)}
-                <a class="show__more" href="${linkFor(p)}">${roll(ctaFor(p) + " >")}</a>
+                <div class="show__links">
+                  ${p.live ? `<a class="show__more" href="${esc(p.live)}" target="_blank" rel="noopener">${roll(liveLabel)}</a>` : ""}
+                  <a class="show__more" href="${linkFor(p)}">${roll(ctaFor(p) + " >")}</a>
+                </div>
               </div>
-              <a class="show__media${p.coverStyle === "comic" ? " comic" : ""}" href="${linkFor(p)}" data-cursor="${p.game ? "play" : "view"}" tabindex="-1" aria-hidden="true">${img(p.cover, { alt: p.title })}${playBadge(p)}</a>
+              <a class="show__media${p.coverStyle === "comic" ? " comic" : ""}" href="${linkFor(p)}" data-cursor="${p.game ? "play" : "view"}" tabindex="-1" aria-hidden="true">${coverMedia(p, "data-show-video")}${playBadge(p)}</a>
             </div>`)
             .join("")}</div>
           <div class="show__figure">
@@ -553,7 +567,10 @@
     const list = $(".show__thumbs", s);
     const fig = $(".show__figure", s);
     const count = $("[data-show-count]", s);
-    let cur = -1, settle;
+    const vids = slides.map((el) => $("video[data-show-video]", el));
+    let cur = -1, settle, onScreen = false;
+    const syncVideo = () =>
+      vids.forEach((v, k) => { if (!v) return; if (onScreen && k === cur && !reduce) v.play().catch(() => {}); else v.pause(); });
 
     const set = (i) => {
       if (i === cur) return;
@@ -568,11 +585,15 @@
       if (fig) { fig.classList.remove("flick"); void fig.offsetWidth; fig.classList.add("flick"); }
       clearTimeout(settle);
       settle = setTimeout(() => slides.forEach((el) => el.classList.remove("was")), 1100);
+      syncVideo();
     };
 
     // Projects change only on click; scrolling past the panel is a normal scroll.
     thumbs.forEach((b, i) => b.addEventListener("click", () => set(i)));
     set(0);
+    if (vids.some(Boolean) && "IntersectionObserver" in window) {
+      new IntersectionObserver(([en]) => { onScreen = en.isIntersecting; syncVideo(); }, { threshold: 0.15 }).observe(s);
+    }
 
     // The figure slides in from the right once a fifth of the panel is on screen.
     if (fig) {

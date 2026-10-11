@@ -95,7 +95,7 @@ window.SITE = {
       focus: "72% 60%",
       roles: [
         { period: "Jan 2026 — Present", title: "Project Manager", company: "JBS Americas & Europe", url: "", place: "Karachi", type: "Full-time" },
-        { period: "Summer 2024", title: "Scrum Master Intern", company: "M-Labs", url: "", place: "Remote / Karachi", type: "Internship" },
+        { period: "Summer 2024", title: "Game Development Intern", company: "M-Labs", url: "", place: "Remote / Karachi", type: "Internship" },
         { period: "Summer 2023", title: "SQA Intern", company: "NSTP NUST", url: "", place: "Islamabad", type: "Internship" },
       ],
     },
@@ -107,7 +107,7 @@ window.SITE = {
     stats: [
       ["6", "AI products owned end to end for one client"],
       ["$41B", "AUM asset manager on the Salesforce integration"],
-      ["4 wks", "to ship a Unity MVP as Scrum Master"],
+      ["4 wks", "to ship a Unity MVP, running the sprints"],
       ["2", "enterprise clients, running in parallel"],
     ],
     roles: [
@@ -140,7 +140,7 @@ window.SITE = {
         ],
       },
       {
-        title: "Scrum Master Intern",
+        title: "Game Development Intern",
         company: "M-Labs · Remote / Karachi",
         period: "Summer 2024",
         clients: [
@@ -220,10 +220,37 @@ window.SITE = {
      - slug:     used in the URL (work.html?p=slug) and the media folder name
      - featured: true shows it in the home page showcase
      - video:    a YouTube/Vimeo link OR a local file like "media/works/x/film.mp4"
+     - coverVideo: a muted loop shown on the cards in place of the cover image (cover = its poster)
+     - live:     the live site; adds a "visit site ↗" link to the cards
      - links:    buttons on the project page (GitHub, live site…)
      - gallery:  list of images shown on the project page (click to enlarge)
      ------------------------------------------------------------------------ */
   projects: [
+    {
+      slug: "the-shire",
+      title: "The Shire",
+      type: "Interactive coding platform",
+      year: "2026",
+      category: "dev",
+      featured: true,
+      tags: ["Next.js", "TypeScript", "Fastify", "Docker"],
+      cover: "media/works/the-shire/mockup-poster.jpg",
+      coverVideo: "media/works/the-shire/mockup.mp4", // the home screen's door animation, on a laptop
+      video: "media/works/the-shire/mockup.mp4",
+      live: "https://dashire.duckdns.org/",
+      summary: "A Codédex-style learn-to-code platform where every line of learner code runs in its own locked-down Docker sandbox.",
+      description: [
+        "Bite-sized Python and JavaScript lessons written in Markdown, with runnable examples, auto-graded exercises and per-learner progress. Anyone can start learning anonymously, and signing in with Google carries their progress across devices.",
+        "The real challenge was running untrusted code safely. Every run gets a fresh container with no network, capped memory, CPU, processes, time and output, a read-only filesystem and a non-root user, and the sandbox is tested against fork bombs, infinite loops, memory exhaustion, network and filesystem escapes, and secret leakage.",
+        "Shared Zod schemas sit between a Fastify API and a Next.js front end, so both sides validate the same contract. Unit and route tests, sandbox tests against real containers and a browser end-to-end test all run in CI.",
+      ],
+      credits: [["Role", "Design & development"], ["Stack", "Next.js, TypeScript, Fastify, Zod, SQLite, Docker, Tailwind"], ["Tests", "105 unit · 26 sandbox · 1 end-to-end"]],
+      links: [
+        { label: "Live site", url: "https://dashire.duckdns.org/" },
+        { label: "GitHub", url: "https://github.com/AnasGhazi/theshire" },
+      ],
+      gallery: ["media/works/the-shire/01.jpg", "media/works/the-shire/02.jpg", "media/works/the-shire/03.jpg"],
+    },
     {
       slug: "minesweeper",
       title: "Minesweeper",
@@ -368,9 +395,9 @@ window.SITE = {
       cover: "media/works/unity-game-mvp/cover.jpg",
       summary: "Led a team of four to scope and ship a Unity game MVP in four weeks at M-Labs.",
       description: [
-        "As Scrum Master I owned sprint planning and the backlog in Jira and ClickUp, ran daily stand-ups and retrospectives, and kept prioritisation tight enough to get a playable MVP out inside a four-week window.",
+        "I also ran the team's Scrum process: I owned sprint planning and the backlog in Jira and ClickUp, ran daily stand-ups and retrospectives, and kept prioritisation tight enough to get a playable MVP out inside a four-week window.",
       ],
-      credits: [["Role", "Scrum Master Intern, M-Labs"], ["Team", "Team of 4"], ["Tools", "Unity, Jira, ClickUp"]],
+      credits: [["Role", "Game Development Intern, M-Labs"], ["Team", "Team of 4"], ["Tools", "Unity, Jira, ClickUp"]],
       links: [],
       gallery: [],
     },

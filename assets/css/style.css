@@ -334,7 +334,7 @@ ul, ol { list-style: none; }
 .card__row { display: flex; justify-content: space-between; }
 .card__title { font-size: clamp(1.6rem, 2.6vw, 2.25rem); font-weight: 700; line-height: 1; letter-spacing: -0.05em; }
 .card__type { opacity: 0.75; }
-.card__body .btn { align-self: flex-start; margin-top: auto; }
+.card__ctas { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; }
 .tags { display: flex; flex-wrap: wrap; gap: 6px; }
 .tags li { border: 1px solid var(--line); padding: 3px 8px; font-size: 0.66rem; letter-spacing: 0.14em; text-transform: uppercase; }
 
@@ -417,7 +417,8 @@ ul, ol { list-style: none; }
   .show__type { padding-top: 8px; text-align: right; opacity: 0.7; }
   .show__info .tags li { border-color: color-mix(in srgb, var(--paper) 55%, transparent); }
   .show__info .tags, .show__type, .show__more { opacity: 0; transition: opacity 0.6s var(--ease-out) 0.25s; }
-  .show__more { align-self: flex-end; font-size: 1.15rem; letter-spacing: 0.06em; text-transform: uppercase; }
+  .show__links { align-self: flex-end; display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px 32px; }
+  .show__more { font-size: 1.15rem; letter-spacing: 0.06em; text-transform: uppercase; }
   .show__slide.on .show__title span { transform: none; }
   .show__slide.on .tags, .show__slide.on .show__more { opacity: 1; }
   .show__slide.on .show__type { opacity: 0.7; }
