@@ -375,7 +375,8 @@ ul, ol { list-style: none; }
 @media (min-width: 768px) {
   .show-m { display: none; }
   .show { display: block; }
-  .show__pin { height: calc(100svh - var(--hh)); }
+  /* overflow-x: clip keeps the figure (and its slide-in offset) from widening the page. */
+  .show__pin { height: calc(100svh - var(--hh)); overflow-x: clip; }
   .show__grid {
     position: relative; height: 100%;
     display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); grid-template-rows: auto minmax(0, 1fr);
@@ -433,7 +434,9 @@ ul, ol { list-style: none; }
   /* The figure stands over the right of the panel; the active cover plays on its TV. */
   .show__figure {
     grid-column: 9 / span 4; grid-row: 1 / span 2; align-self: end; justify-self: center;
-    position: relative; z-index: 2; height: calc(100% - 16px); aspect-ratio: 725 / 1323; pointer-events: none;
+    /* Height follows the panel, capped so the figure's width stays within its four columns
+       (4/12 of the page) on tall, narrow windows. */
+    position: relative; z-index: 2; height: min(calc(100% - 16px), 100vw / 3 * 1323 / 725); aspect-ratio: 725 / 1323; pointer-events: none;
     transform: translateX(18%); opacity: 0; transition: transform 1.4s var(--ease-out), opacity 0.9s var(--ease-out);
   }
   /* A short slide in from the right once the panel is a little way into view (see showcase()). */
@@ -491,7 +494,9 @@ a.svc__media:hover > .fill { transform: scale(1.04); }
 .chat__text { display: flex; flex-direction: column; align-items: flex-start; gap: 32px; padding: 40px var(--pad) 48px; }
 .chat__text p { max-width: 32ch; font-size: 1.25rem; line-height: 1.4; }
 .chat__img { position: relative; aspect-ratio: 3 / 2; overflow: hidden; background: var(--tint); border-top: 1px solid var(--line); }
-.chat__band { position: relative; aspect-ratio: 1920 / 256; min-height: 140px; overflow: hidden; background: var(--tint); border-top: 1px solid var(--line); }
+/* Full-bleed strip at the video's 1920:256 shape, never shorter than 140px. Sized with an explicit
+   height rather than aspect-ratio + min-height, which would widen the strip (and the page) on phones. */
+.chat__band { position: relative; width: 100%; height: max(140px, 100vw * 256 / 1920); overflow: hidden; background: var(--tint); border-top: 1px solid var(--line); }
 @media (min-width: 768px) {
   .chat { grid-template-columns: 2fr 3fr; }
   .chat__text { padding: 96px var(--pad) var(--pad); }
